@@ -27,6 +27,7 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.0-M4'
     implementation 'jakarta.activation:jakarta.activation-api:2.1.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
 }

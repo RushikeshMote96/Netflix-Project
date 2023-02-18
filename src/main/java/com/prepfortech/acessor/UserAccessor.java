@@ -43,7 +43,7 @@ public class UserAccessor {
     }
 
     public void addNewUser(final String email, final String name, final String password, final String phoneNo, final UserState userState,final UserRole userRole){
-        String insertQuery = "Insert INTO user values(?,?,?,?,?,?,?)";
+        String insertQuery = "Insert INTO user values(?,?,?,?,?,?,?,?,?)";
         try(Connection connection = dataSource.getConnection()){
             PreparedStatement pstmt = connection.prepareStatement((insertQuery));
             pstmt.setString(1, UUID.randomUUID().toString());
@@ -53,6 +53,8 @@ public class UserAccessor {
             pstmt.setString(5,phoneNo);
             pstmt.setString(6,userState.name());
             pstmt.setString(7,userRole.name());
+            pstmt.setString(8,EmailVerificationStatus.UNVERIFIED.name());
+            pstmt.setString(9,PhoneVerificationStatus.UNVERIFIED.name());
             pstmt.execute();
         }
         catch (SQLException ex){

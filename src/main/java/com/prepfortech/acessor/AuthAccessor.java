@@ -17,7 +17,7 @@ public class AuthAccessor {
     @Autowired
     DataSource dataSource;
     public void storeToken(final String userId, final String token){
-        String insertQuery = "insert into auth('authId','token','userId') values(?,?,?)";
+        String insertQuery = "insert into auth (authId,token,userId) values(?,?,?)";
         String uuid = UUID.randomUUID().toString();
 
         try(Connection connection = dataSource.getConnection()){
@@ -34,17 +34,20 @@ public class AuthAccessor {
         }
     }
     public AuthDTO getAuthByToken(final String token){
-        String query = "select authId,token,userId from authI where token = ?";
+        String query = "select authId,token,userId from auth where token = ?";
+        //System.out.println("auth token accessor"+token);
         try(Connection connection = dataSource.getConnection()){
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1,token);
             ResultSet resultSet = pstmt.executeQuery();
+            //System.out.println("auth token accessor result set"+resultSet);
             if(resultSet.next()){
                 AuthDTO authDTO = AuthDTO.builder()
                         .authId(resultSet.getString(1))
                         .token(resultSet.getString(2))
                         .userId(resultSet.getString(3))
                         .build();
+                System.out.println("get by auth token"+authDTO.getAuthId());
                 return authDTO;
 
             }

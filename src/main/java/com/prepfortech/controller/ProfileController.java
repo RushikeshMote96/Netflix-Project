@@ -18,7 +18,7 @@ public class ProfileController {
     ProfileService profileService;
 
     @PostMapping("/user/profile")
-    @Secured({Roles.Customer})
+    @Secured({Roles.Customer,Roles.Anonymous})
 
     public ResponseEntity<Void> activateNewProfile(@RequestBody CreateProfileInput createProfileInput){
 

@@ -33,11 +33,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private AuthAccessor authAccessor;
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager){
+
         super(authenticationManager);
     }
     @Override
     public void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain){
         ServletContext servletContext = req.getServletContext();
+
         WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         if(userAccessor == null){
             userAccessor = (UserAccessor) applicationContext.getBean("userAccessor");
@@ -62,16 +64,23 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         if (authorizationHeader != null) {
             if (authorizationHeader.startsWith(tokenPrefix)) {
                 String token = authorizationHeader.replace(tokenPrefix, "");
+                //System.out.println("token-" + token);
                 Claims claims = Jwts.parser()
                         .setSigningKey(SecurityConstant.SECRET_KEY.getBytes())
                         .parseClaimsJws(token)
                         .getBody();
+                System.out.println("claims" + claims);
                 Date expirationTime = claims.getExpiration();
                 if (expirationTime.after(new Date(System.currentTimeMillis()))) {
+                    System.out.println("expiration date is correct");
                     AuthDTO authDTO = authAccessor.getAuthByToken(token);
+                    System.out.println("auth DTO-" + authDTO);
+
                     if (authDTO != null) {
                         UserDTO userDTO = userAccessor.getUserByEmail(claims.getSubject());
+
                         if (userDTO != null) {
+                            System.out.println("User DTO-" + userDTO);
                             return new UsernamePasswordAuthenticationToken(userDTO, userDTO.getPassword(),
                                     Arrays.asList(new SimpleGrantedAuthority(userDTO.getRole().name())));
                         }

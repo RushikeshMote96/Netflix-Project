@@ -21,7 +21,7 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LoginInput loginInput){
         String email = loginInput.getEmail();
         String password = loginInput.getPassword();
-        System.out.println("email:"+email+"password"+ password);
+        //System.out.println("email:"+email+"password"+ password);
 
         try{
             String token = authService.login(email, password);
@@ -36,9 +36,10 @@ public class AuthController {
     }
     @PostMapping("/logoutCurrentUser")
     @Secured({Roles.User,Roles.Customer})
-    public void logout(@RequestHeader("Authorization")String authorizationHeader){
+    public void logout(@RequestHeader(name = "Authorization" , required = false)String authorizationHeader){
         String token = authorizationHeader.replace("Bearer", "");
         authService.logout(token);
+
     }
 
 }

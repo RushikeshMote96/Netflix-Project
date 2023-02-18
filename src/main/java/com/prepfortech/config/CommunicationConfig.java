@@ -11,7 +11,7 @@ public class CommunicationConfig {
     @Bean
     public Mailer getMailer(){
         String email = System.getenv("email");
-        String password = System.getenv("password");
+        String password = System.getenv("emailpassword");
         if(email == null || email.length()==0 || password == null || password.length()==0){
             System.out.println("either email or password is not set");
             System.exit(1);
@@ -22,11 +22,11 @@ public class CommunicationConfig {
         return mailer;
 
     }
-    @Bean("FromEmail")
+    @Bean("fromEmail")
     public String getFromEmail(){
         return System.getenv("email");
     }
-    @Bean("FromName")
+    @Bean("fromName")
     public String getFromName(){
         return System.getenv("name");
     }
